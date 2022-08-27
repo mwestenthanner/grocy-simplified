@@ -1,20 +1,17 @@
 <template>
   <div class="app">
     <Sidebar />
-    <router-view />
+    <main>
+      <HeaderBar />
+      <router-view />
+    </main>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script lang="ts" setup>
 import Sidebar from './components/Sidebar.vue'; 
+import HeaderBar from './components/Components/HeaderBar.vue';
 
-export default defineComponent({
-  name: 'App',
-  components: {
-    Sidebar
-}
-});
 </script>
 
 <style>

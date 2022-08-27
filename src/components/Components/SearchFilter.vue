@@ -16,20 +16,26 @@ export default defineComponent({
 .search-box {
     display: flex;
     align-items: center;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    border: 1px solid var(--font-accent);
 }
 
 .search-box > svg {
-    height: 2rem;
+    height: 1rem;
     width: auto;
+}
+
+svg > circle, svg > line {
+    stroke: var(--font-accent);
 }
 
 #search {
     border: none;
     margin-left: 0.5rem;
-    padding: 1rem;
     font-family: Inter;
     font-size: 100%;
-    color: var(--dark-green);
+    color: var(--font-accent);
 }
 
 #search:focus {
@@ -37,7 +43,7 @@ export default defineComponent({
 }
 
 ::placeholder {
-  color: var(--dark-green);
+  color: var(--font-accent);
 }
 
 </style>

@@ -63,7 +63,7 @@
     --font-main: #434343;
     --font-accent: #BEBEBE;
     --background: #fff;
-    --accent-primary: #FA9B74;
+    --accent-primary: #FDD5C5;
     --accent-secondary: #628676;
 }
 
@@ -89,9 +89,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* --- GLOBAL STYLES --- */
-.container {
-    margin: 3rem;
-  }
 
 .search-filter-add {
     margin-top: 2rem;

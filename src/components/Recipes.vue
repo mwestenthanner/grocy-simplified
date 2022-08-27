@@ -13,14 +13,12 @@
 import { defineComponent } from 'vue'
 import CardView from './Views/CardView.vue'
 import SearchFilter from './Components/SearchFilter.vue'
-import Add from './Components/Add.vue'
 
 export default defineComponent({
     name: 'Pantry',
     components: {
         CardView,
         SearchFilter,
-        Add
     }
 })
 </script>
