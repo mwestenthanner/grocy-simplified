@@ -1,40 +1,20 @@
 <template>
   <div class="container">
 
-    <h1>Hello, Marianne 🥕</h1>
+    Produkt verbraucht
+    Produkt umgeräumt
 
-    <h2>Favorite Recipes</h2>
-
-    <CardView />
-
-    <h2>Pantry</h2>
-    <div class="search-filter-add">
-      <SearchFilter />
-      <Add />
-    </div>
-
-    <ListView />
+    Einkaufsliste
+    Bestand
+    Rezepte
+    Wochenplan
 
   </div>
 
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-import SearchFilter from './Items/SearchFilter.vue'
-import Add from './Items/Add.vue'
-import ListView from './Views/ListView.vue'
-import CardView from './Views/CardView.vue'
+<script lang="ts" setup>
 
-export default defineComponent({
-  name: 'App',
-  components: {
-    SearchFilter,
-    Add,
-    ListView,
-    CardView
-  }
-})
 </script>
 
 <style scoped>

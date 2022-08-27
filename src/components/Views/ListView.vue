@@ -6,7 +6,7 @@
             </div>
             <h3 class="tag-heading">Area</h3>
             <h3>Quantity</h3>
-            <h3>Expires in</h3>
+            <h3>Status</h3>
         </div>
         <ListItem v-for="item in productList" :key="item.name" :product="item" />
     </div>
@@ -14,7 +14,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import ListItem from '../Items/ListItem.vue'
+import ListItem from '../Components/ListItem.vue'
 import { useStore } from 'vuex';
 
 export default defineComponent({

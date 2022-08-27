@@ -1,10 +1,53 @@
 /* --- FONT IMPORTS --- */
 
-/* Inter, variable */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@419&display=swap');
+@font-face {
+    font-family: "Jost";
+    src: local("Jost"),
+     url(./fonts/jost_regular.ttf) format("truetype");
+     font-weight: normal;
+     font-style: normal;
+}
 
-/* Vollkorn */
-@import url('https://fonts.googleapis.com/css2?family=Vollkorn:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@font-face {
+    font-family: "Jost";
+    src: local("Jost"),
+     url(./fonts/jost_medium.ttf) format("truetype");
+    font-weight: medium;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Jost";
+    src: local("Jost"),
+     url(./fonts/jost_bold.ttf) format("truetype");
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Inter";
+    src: local("Inter"),
+     url(./fonts/Inter-Regular.ttf) format("truetype");
+     font-weight: normal;
+     font-style: normal;
+}
+
+@font-face {
+    font-family: "Inter";
+    src: local("Inter"),
+     url(./fonts/Inter-Medium.ttf) format("truetype");
+    font-weight: medium;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Inter";
+    src: local("Inter"),
+     url(./fonts/Inter-Bold.ttf) format("truetype");
+    font-weight: bold;
+    font-style: normal;
+}
+
 
 /* --- COLOR VARIABLES --- */
 :root {
@@ -15,6 +58,13 @@
     --brown: rgba(180,133,79,255);
     --green-grey: rgba(174,195,177,255);
     --white: #fff;
+
+    
+    --font-main: #434343;
+    --font-accent: #BEBEBE;
+    --background: #fff;
+    --accent-primary: #FA9B74;
+    --accent-secondary: #628676;
 }
 
 /* --- STYLING RESETS --- */
@@ -29,11 +79,13 @@ body {
 }
 
 p, a, span, ul, li {
-    font-family: Inter, sans-serif;
+    font-family: "Inter", sans-serif;
+    font-weight: normal;
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: Vollkorn, serif;
+    font-family: "Jost", sans-serif;
+    font-weight: bold;
 }
 
 /* --- GLOBAL STYLES --- */

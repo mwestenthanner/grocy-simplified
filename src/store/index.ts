@@ -16,7 +16,7 @@ const state: State = {
           area: 'Pantry',
           quantity: 2,
           unit: 'pcs',
-          expiry: new Date("2022-04-16"),
+          expiry: new Date("2022-08-28"),
           onShoppingList: false
       } as Product,
 
@@ -26,7 +26,7 @@ const state: State = {
           area: 'Fridge',
           quantity: 1,
           unit: 'pcs',
-          expiry: new Date("2022-03-16"),
+          expiry: new Date("2022-09-16"),
           onShoppingList: false
       } as Product,
 
@@ -36,7 +36,7 @@ const state: State = {
         area: 'Freezer',
         quantity: 1,
         unit: 'loaf',
-        expiry: new Date("2022-07-01"),
+        expiry: new Date("2022-10-01"),
         onShoppingList: false
       } as Product
 

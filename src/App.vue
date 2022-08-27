@@ -21,7 +21,7 @@ export default defineComponent({
 
 .app {
   display: grid;
-  grid-template-columns: 1fr 4fr;
+  grid-template-columns: 15% 1fr;
 }
 
 </style>
