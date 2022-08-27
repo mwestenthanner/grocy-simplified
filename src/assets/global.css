@@ -1,0 +1,49 @@
+/* --- FONT IMPORTS --- */
+
+/* Inter, variable */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@419&display=swap');
+
+/* Vollkorn */
+@import url('https://fonts.googleapis.com/css2?family=Vollkorn:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+/* --- COLOR VARIABLES --- */
+:root {
+    --light-green: rgba(105,145,110,255);
+    --lighter-green: rgba(174,195,177,255);
+    --dark-green: rgba(12,56,43,255);
+    --yellow: rgba(245,178,2,255);
+    --brown: rgba(180,133,79,255);
+    --green-grey: rgba(174,195,177,255);
+    --white: #fff;
+}
+
+/* --- STYLING RESETS --- */
+* {
+    margin: 0;
+    padding: 0;
+}
+
+/* --- TEXT STYLING --- */
+body {
+    color: var(--dark-green);
+}
+
+p, a, span, ul, li {
+    font-family: Inter, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: Vollkorn, serif;
+}
+
+/* --- GLOBAL STYLES --- */
+.container {
+    margin: 3rem;
+  }
+
+.search-filter-add {
+    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: 5fr 1fr;
+    grid-template-rows: 1fr;
+  }
