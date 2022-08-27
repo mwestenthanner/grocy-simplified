@@ -1,10 +1,11 @@
 <template>
-    <div class="list-item" @click="showControls = !showControls">
+    <div class="list-item" :class="{ active: showControls }" @click="showControls = !showControls">
         <p>{{ props.product.name }}</p>
         <p class="tag">{{ props.product.area }}</p>
         <p>{{ props.product.quantity }}</p>
         <p>{{ getStatus(props.product) }}</p>
     </div>
+    <Transition>
     <div class="controls" v-show="showControls">
         <div class="item-controls">
             <button>Mark as used up</button>
@@ -21,6 +22,7 @@
             <button>Change expiry date</button>
         </div>
     </div>
+    </Transition>
 </template>
 
 <script lang="ts" setup>
@@ -83,16 +85,20 @@ function getStatus(product: Product) {
     grid-template-rows: 1fr;
     grid-template-columns: 3fr 1fr 1fr 1fr;
     padding: 1rem 1rem 1rem 2rem;
-    border: 1px solid #eee;
+    border-bottom: 1px solid var(--font-accent);
     grid-gap: 4rem;
     align-items: center;
+}
+
+.active {
+   border-bottom: none !important; 
 }
 
 .tag {
     padding: 7px 10px 7px 10px;
     border-radius: 8px;
-    color: white;
-    background-color: var(--yellow);
+    color: var(--font-main);
+    background-color: var(--accent-primary);
     text-align: center;
 }
 
@@ -117,6 +123,7 @@ function getStatus(product: Product) {
     margin-bottom: 1rem;
     padding: 1rem 1rem 1rem 2rem;
     grid-gap: 4rem;
+    border-bottom: 1px solid var(--font-accent);
 }
 
 .controls div:not(:first-child) {
@@ -128,12 +135,22 @@ function getStatus(product: Product) {
     color: white;
     padding: 0.7rem;
     border-radius: 10px;
-    background-color: var(--lighter-green);
+    background-color: var(--accent-secondary);
     border: none;
 }
 
 .controls button:not(:first-child) {
     margin-left: 0.5rem;
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
 
 </style>
