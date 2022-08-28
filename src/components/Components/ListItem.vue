@@ -2,11 +2,6 @@
     <div class="list-item">
         <p>{{ props.product.name }}</p>
         <p class="tag">{{ props.product.area }}</p>
-        <div class="quantity">
-            <button>+</button>
-            <p>{{ props.product.quantity }}</p>
-            <button>-</button>
-        </div>
         <p class="status" :class="{ expiring : isExpiring, expired : isExpired }">{{ getStatus(props.product) }}</p>
         <div class="controls">
             <button>
@@ -99,7 +94,7 @@ function getStatus(product: Product) {
 .list-item {
     display: grid;
     grid-template-rows: 1fr;
-    grid-template-columns: 3fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 3fr 1fr 1fr 1fr;
     padding: 1rem 1rem 1rem 2rem;
     border-bottom: 1px solid var(--font-accent);
     grid-gap: 4rem;
