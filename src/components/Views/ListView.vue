@@ -1,6 +1,7 @@
 <template>
     <div class="categories">
-        <span v-for="item in locationList" :key="item">{{ item }}</span>
+        <span>All locations</span>
+        <span v-for="item in locationList" :key="item.id">{{ item.name }}</span>
     </div>
     <div class="list-view">
         <div class="filter-bar">
@@ -18,28 +19,22 @@
             <h3>Modify</h3>
         </div>
         <div class="list">
-            <ListItem v-for="item in productList" :key="item.name" :product="item" />
+            <ListItem v-for="item in stock" :key="item.name" :product="item" />
         </div>
     </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import ListItem from '../Components/ListItem.vue'
 import SearchFilter from '../Components/SearchFilter.vue'
 import Filter from '../Components/Filter.vue'
 import { useStore } from 'vuex';
 
 const store = useStore();
-const productList = ref(store.state.productList)
+const stock = ref(store.state.stock)
 
-const locationList = [
-    'All locations', 
-    'Fridge',
-    'Freezer',
-    'Pantry',
-    'Kitchen'
-]
+const locationList = computed(() => store.getters.getLocations)
 
 </script>
 

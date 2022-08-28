@@ -3,6 +3,7 @@
   <h2>{{ heading }}</h2>
   <div class="quick-menu">
     <SearchFilter />
+    <Button heading="Add" />
     <Button heading="Use up" />
     <Button heading="Move" />
   </div>
@@ -36,7 +37,7 @@ watch(route, (from, to) => {
 
 .quick-menu {
   display: flex;
-  gap: 2rem;
+  gap: 1rem;
 }
 
 </style>

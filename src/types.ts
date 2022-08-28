@@ -5,8 +5,10 @@ export interface Product {
     quantity?: number // Quantity should be optional
     unit: string
     expiry: Date
+    mandatory: boolean
     onShoppingList: boolean
     quantityOnShoppingList?: number // also optional
+    status: string
     nutritionalValue?: Array<KeyValuePair>
 }
 
