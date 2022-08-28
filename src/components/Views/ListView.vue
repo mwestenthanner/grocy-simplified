@@ -14,7 +14,8 @@
             </div>
             <h3 class="tag-heading">Area</h3>
             <h3>Quantity</h3>
-            <h3>Status</h3>
+            <h3 class="status">Status</h3>
+            <h3>Modify</h3>
         </div>
         <div class="list">
             <ListItem v-for="item in productList" :key="item.name" :product="item" />
@@ -75,7 +76,7 @@ const locationList = [
     margin: 2rem 0 1rem 0;
     display: grid;
     grid-template-rows: 1fr;
-    grid-template-columns: 3fr 1fr 1fr 1fr;
+    grid-template-columns: 3fr 1fr 1fr 1fr 1fr;
     padding: 1rem 1rem 1rem 2rem;
     grid-gap: 4rem;
     align-items: center;
@@ -88,6 +89,10 @@ const locationList = [
 .heading-item {
     display: flex;
     flex-direction: row;
+}
+
+.status {
+    text-align: left !important;
 }
 
 .chevron {
