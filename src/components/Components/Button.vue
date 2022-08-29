@@ -18,14 +18,10 @@ const props = defineProps({
 <style scoped>
 
 button {
-    padding: 1rem 1.5rem;
-    border: none;
-    background-color: var(--accent-primary);
-    border-radius: 10px;
     font-size: 105%;
     font-weight: bold;
-    color: var(--font-main);
 }
+
 button > svg {
     fill: var(--font-main);
     vertical-align: middle;

@@ -3,7 +3,7 @@
   <h2>{{ heading }}</h2>
   <div class="quick-menu">
     <SearchFilter />
-    <Button heading="Add" />
+    <Button heading="Add" @click="addProductToStock(1, 1)" />
     <Button heading="Use up" />
     <Button heading="Move" />
   </div>
@@ -15,6 +15,7 @@ import SearchFilter from './SearchFilter.vue'
 import Button from './Button.vue'
 import { useRoute } from 'vue-router';
 import { ref, watch } from 'vue';
+import { addProductToStock } from '@/functions/grocy';
 
 const route = useRoute();
 let heading = ref();

@@ -2,19 +2,42 @@ import { createStore } from 'vuex'
 import { Product, Recipe } from '../types'
 
 const productList = [
-
-  {
-      id: 1235,
-      name: 'Banana',
-      area: 'Pantry',
-      quantity: 2,
-      unit: 'pcs',
-      expiry: new Date("2022-08-28"),
-      mandatory: true,
-      onShoppingList: false,
-      status: 'In stock'
-  } as Product
-
+  [
+    {
+       "id":"1",
+       "name":"Banane",
+       "description":"Ein leckeres Obst.",
+       "product_group_id":"",
+       "active":"1",
+       "location_id":"2",
+       "shopping_location_id":"",
+       "qu_id_purchase":"2",
+       "qu_id_stock":"2",
+       "qu_factor_purchase_to_stock":"1.0",
+       "min_stock_amount":"1",
+       "default_best_before_days":"0",
+       "default_best_before_days_after_open":"0",
+       "default_best_before_days_after_freezing":"0",
+       "default_best_before_days_after_thawing":"0",
+       "picture_file_name":"e5e298y04qvkt7r1eih5banane.jpg",
+       "enable_tare_weight_handling":"0",
+       "tare_weight":"0.0",
+       "not_check_stock_fulfillment_for_recipes":"0",
+       "parent_product_id":null,
+       "calories":"120",
+       "cumulate_min_stock_amount_of_sub_products":"0",
+       "due_type":"1",
+       "quick_consume_amount":"1.0",
+       "hide_on_stock_overview":"0",
+       "default_stock_label_type":"0",
+       "should_not_be_frozen":"0",
+       "row_created_timestamp":"2022-08-27 08:47:38",
+       "treat_opened_as_out_of_stock":"1",
+       "no_own_stock":"0",
+       "default_consume_location_id":"",
+       "move_on_open":"0"
+    }
+ ]
 ]
 
 const recipeList = [
@@ -39,21 +62,7 @@ const locationList = [
  }
 ]
 
-const stock = [
-
-  {
-      id: 1235,
-      name: 'Banana',
-      area: 'Pantry',
-      quantity: 2,
-      unit: 'pcs',
-      expiry: new Date("2022-08-28"),
-      mandatory: true,
-      onShoppingList: false,
-      status: 'In stock'
-  } as Product
-
-]
+const stock: Product[] = []
 
 export default createStore({
   state: {
@@ -63,6 +72,10 @@ export default createStore({
     stock
   }, 
   getters: {
+
+    getStock: (state => {
+      return state.stock;
+    }),
 
     getLocationFromId: (state) => (id: string) => {
       return state.locationList.find(item => item.id === id);
@@ -78,19 +91,30 @@ export default createStore({
     setRecipeList(state, recipes:
       Array<Recipe>) {
      state.recipeList = recipes;
-   },
+    },
 
-   setProducts(state, products: Array<Product>) {
-     state.productList = products;
-   },
+    setProducts(state, products) {
+      state.productList = products;
+    },
 
-   setLocations(state, locations) {
-     state.locationList = locations;
-   },
+    setLocations(state, locations) {
+      state.locationList = locations;
+    },
 
-   setStock(state, stock: Array<Product>) {
-     state.stock = stock;
-   },
+    setStock(state, stock: Array<Product>) {
+      state.stock = stock;
+    },
+
+    setStockIds(state, { productId, stockIds }) {
+      const index = state.stock.findIndex(item => item.id = productId);
+      state.stock[index].stockIds = stockIds;
+    },
+
+    setProductLocation(state, payload) {
+      const index = state.stock.findIndex(item => item.id = payload.productId);
+      state.stock[index].locationId = payload.productLocation;
+      state.stock[index].location = payload.locationName;
+    }
 
   },
   actions: {},

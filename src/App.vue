@@ -14,6 +14,7 @@ import HeaderBar from './components/Components/HeaderBar.vue';
 import { ref } from 'vue';
 import { getLocations, getProducts, getStock } from './functions/grocy'
 
+getProducts();
 getLocations();
 getStock();
 

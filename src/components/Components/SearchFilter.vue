@@ -17,7 +17,7 @@ export default defineComponent({
     display: flex;
     align-items: center;
     border-radius: 0.5rem;
-    padding: 1rem;
+    padding: 0 1rem;
     border: 1px solid var(--font-accent);
 }
 

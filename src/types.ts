@@ -1,7 +1,8 @@
 export interface Product {
     id: number
     name: string
-    area: string
+    location: string
+    locationId: number
     quantity?: number // Quantity should be optional
     unit: string
     expiry: Date
@@ -9,6 +10,7 @@ export interface Product {
     onShoppingList: boolean
     quantityOnShoppingList?: number // also optional
     status: string
+    stockIds?: Array<number> // exists if product is in stock
     nutritionalValue?: Array<KeyValuePair>
 }
 
