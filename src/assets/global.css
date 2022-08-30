@@ -65,6 +65,17 @@
     --background: #fff;
     --accent-primary: #FDD5C5;
     --accent-secondary: #628676;
+
+
+/* vueform multiselect */
+    --ms-border-color: var(--font-accent);
+    --ms-border-width: 1px;
+    --ms-radius: 0.5rem;
+    --ms-option-bg-selected: var(--accent-primary);
+    --ms-option-color-selected: var(--font-main);
+    --ms-option-bg-selected-pointed: var(--accent-primary);
+    --ms-option-color-selected-pointed: var(--font-main);    
+    --ms-ring-color: transparent;    
 }
 
 /* --- STYLING RESETS --- */
@@ -129,5 +140,13 @@ input[type=text], input[type=date] {
 label {
     font-family: Inter;
     color: var(--font-main);
+}
+
+.multiselect {
+    height: 3rem;
+}
+
+.multiselect-search {
+    border: none !important;
 }
 

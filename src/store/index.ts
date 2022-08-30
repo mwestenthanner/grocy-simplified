@@ -2,7 +2,6 @@ import { createStore } from 'vuex'
 import { Product, Recipe } from '../types'
 
 const productList = [
-  [
     {
        "id":"1",
        "name":"Banane",
@@ -37,7 +36,6 @@ const productList = [
        "default_consume_location_id":"",
        "move_on_open":"0"
     }
- ]
 ]
 
 const recipeList = [
@@ -77,12 +75,43 @@ export default createStore({
       return state.stock;
     }),
 
+    getStockProductFromName: (state) => (name: string) => {
+      return state.stock.find(item => item.name === name);
+    },
+
+    getLocationForStockProduct: (state) => (productName: string) => {
+      const product = state.stock.find(item => item.name === productName);
+      return product?.location;
+    },
+
     getLocationFromId: (state) => (id: string) => {
       return state.locationList.find(item => item.id === id);
     },
 
+    getLocationFromName: (state) => (name: string) => {
+      return state.locationList.find(item => item.name === name);
+    },
+
+    getLocationIdFromName: (state) => (name: string) => {
+      const product = state.locationList.find(item => item.name === name);
+      return product?.id;
+    },
+
     getLocations: (state) => {
       return state.locationList;
+    },
+
+    getProducts: (state) => {
+      return state.productList;
+    },
+
+    getProductFromName: (state) => (name: string) => {
+      return state.productList.find(item => item.name === name);
+    },
+
+    getProductIdFromName: (state) => (name: string) => {
+      const product = state.productList.find(item => item.name === name);
+      return product?.id;
     }
 
   },

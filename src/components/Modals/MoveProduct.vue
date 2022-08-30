@@ -2,13 +2,26 @@
   <div id="modal-overlay" @click="$emit('close-modal')">
 
     <div id="modal" @click.stop>
-        <h2>Move {{ props.product.name }}</h2>
-        <p>{{ props.product.name }} currently is in {{ props.product.location }}. Move to:</p>
-        <select name="locations" id="locations" v-model="locationTo">
-            <option v-for="location in locationList" :key="location.id" :value="location.id">{{ location.name }}</option>
-        </select>
+        <h2>Move Product</h2>
+        <div class="choose-product">
+          <label for="product-select">Product</label>
+            <Multiselect
+                id="product-select"
+                v-model="productValue"
+                :options="getOptions(productsInStock)"
+                :searchable="true"
+                @select="changeProductLocation()"
+                />
+        </div>
+        <p>{{ productValue }} currently is in {{ locationFromName }}. Move to:</p>
+        <Multiselect
+                id="location-select"
+                v-model="locationTo"
+                :options="getOptions(locationList, locationFromName)"
+                :searchable="true"
+                />
         <div class="buttons">
-            <button type="submit" @click="moveProduct(props.product.id, props.product.quantity ?? 0, props.product.locationId, locationTo); $emit('close-modal')">Save</button>
+            <button type="submit" @click="saveChanges(), $emit('close-modal')">Save</button>
             <button type="button" @click="$emit('close-modal')">Cancel</button>
         </div>
     </div>
@@ -18,13 +31,19 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, PropType, computed, ref } from 'vue'
+import { defineProps, PropType, computed, ref, toRef } from 'vue'
+import Multiselect from '@vueform/multiselect'
 import { Product } from '../../types'
 import { moveProduct } from '../../functions/grocy'
 import { useStore } from 'vuex';
 
 const store = useStore();
 const locationList = computed(() => store.getters.getLocations) // Here the current location should be filtered out later
+const productsInStock = computed(() => store.getters.getStock);
+
+const productValue = ref('');
+const locationFromName = ref('');
+const locationTo = ref(0);
 
 const props = defineProps({
     product:  {
@@ -33,9 +52,41 @@ const props = defineProps({
         }
 })
 
-const locationTo = ref(0)
+if (props.product) {
+  const product = toRef(props, 'product');
+  locationFromName.value = product.value?.location ?? '';
+  productValue.value = product.value?.name ?? '';
+}
+
+function getOptions(property: {[x: string]: any; value: any[]; }, filterOut?: string) {
+    const options: any[] = [];
+
+    property.forEach((element: any) => {
+
+      if (filterOut && element.name == filterOut) {
+        return;
+      } else options.push(element.name);
+
+    });
+
+    return options;
+}
+
+function changeProductLocation() {
+  const locationName = computed(() => store.getters.getLocationForStockProduct(productValue.value));
+  locationFromName.value = locationName.value;
+}
+
+function saveChanges() {
+
+  const product = computed(() => store.getters.getStockProductFromName(productValue.value));
+  moveProduct(product.value.id, product.value.quantity, product.value.locationId, locationTo.value);
+
+}
 
 </script>
+
+<style src="@vueform/multiselect/themes/default.css"></style>
 
 <style scoped>
 

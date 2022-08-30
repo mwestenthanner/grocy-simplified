@@ -112,7 +112,7 @@ async function getStock() {
 
 }
 
-async function addProductToStock(productId: number, quantity: number, bestBefore?: string) {
+async function addProductToStock(productId: number, quantity: number, locationId: number, bestBefore?: string) {
 
     headers.append('Accept', 'application/json');
     headers.append('Content-Type', 'application/json');
@@ -120,13 +120,12 @@ async function addProductToStock(productId: number, quantity: number, bestBefore
     const noExpiry = '2999-12-31';
     const expiryDate = bestBefore ?? noExpiry;
 
-    console.log(expiryDate);
-
     const requestBody = {
         "amount": quantity,
         "best_before_date": expiryDate,
         "transaction_type": "purchase",
-        "price": "0.00"
+        "price": "0.00",
+        "location_id": locationId
     }
 
     const productUrl = apiUrl + 'stock/products/' + productId + '/add'
@@ -225,8 +224,8 @@ async function editProductDetails(product: Product, expiry?: string, mandatory?:
         else if (status == "In stock") {
 
             if (expiry) {
-                addProductToStock(product.id, 999, expiry);
-            } else addProductToStock(product.id, 999, '2999-12-31');
+                addProductToStock(product.id, 999, product.locationId, expiry);
+            } else addProductToStock(product.id, 999, product.locationId, '2999-12-31');
 
         }
 
@@ -455,6 +454,7 @@ function getLocationFromId (id: number) {
 
     const location = store.getters.getLocationFromId(id.toString());
     return location.name;
+    
 }
 
 function isMandatory(minStockAmount: number) {
