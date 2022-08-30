@@ -1,7 +1,7 @@
 <template>
     <div class="categories">
-        <span>All locations</span>
-        <span v-for="item in locationList" :key="item.id">{{ item.name }}</span>
+        <span :class="{ 'active-category': activeLocation == 0 }" @click="activeLocation = 0">All locations</span>
+        <span v-for="item in locationList" :key="item.id" :class="{ 'active-category': activeLocation == item.id }" @click="activeLocation = item.id">{{ item.name }}</span>
     </div>
     <div class="list-view">
         <div class="filter-bar">
@@ -31,9 +31,11 @@ import Filter from '../Components/Filter.vue'
 import { useStore } from 'vuex';
 
 const store = useStore();
-const stock = computed(() => store.getters.getStock)
 
-const locationList = computed(() => store.getters.getLocations)
+const activeLocation = ref(0);
+
+const stock = computed(() => store.getters.getSingleLocationStock(activeLocation.value));
+const locationList = computed(() => store.getters.getLocations);
 
 </script>
 
@@ -51,10 +53,11 @@ const locationList = computed(() => store.getters.getLocations)
     font-size: 120%;
     color: var(--font-accent);
     margin-right: 3rem;
+    cursor: pointer;
 }
 
-.categories span:first-child {
-    color: var(--font-main);
+.active-category {
+    color: var(--font-main) !important;
     padding-bottom: 2rem;
     border-bottom: 2px solid var(--font-main);
 }

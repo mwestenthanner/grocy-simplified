@@ -1,5 +1,6 @@
 import { createStore } from 'vuex'
 import { Product, Recipe } from '../types'
+import { filterByLocation } from './filters'
 
 const productList = [
     {
@@ -77,6 +78,10 @@ export default createStore({
 
     getStockProductFromName: (state) => (name: string) => {
       return state.stock.find(item => item.name === name);
+    },
+
+    getSingleLocationStock: (state) => (locationId: number) => {
+      return filterByLocation(state.stock, locationId);
     },
 
     getLocationForStockProduct: (state) => (productName: string) => {
