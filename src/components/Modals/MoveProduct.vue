@@ -16,7 +16,7 @@
         <p>{{ productValue }} currently is in {{ locationFromName }}. Move to:</p>
         <Multiselect
                 id="location-select"
-                v-model="locationTo"
+                v-model="locationToName"
                 :options="getOptions(locationList, locationFromName)"
                 :searchable="true"
                 />
@@ -43,7 +43,7 @@ const productsInStock = computed(() => store.getters.getStock);
 
 const productValue = ref('');
 const locationFromName = ref('');
-const locationTo = ref(0);
+const locationToName = ref(0);
 
 const props = defineProps({
     product:  {
@@ -80,6 +80,8 @@ function changeProductLocation() {
 function saveChanges() {
 
   const product = computed(() => store.getters.getStockProductFromName(productValue.value));
+  const locationTo = computed(() => store.getters.getLocationIdFromName(locationToName.value));
+  console.log('locationTo: ' + locationTo.value)
   moveProduct(product.value.id, product.value.quantity, product.value.locationId, locationTo.value);
 
 }

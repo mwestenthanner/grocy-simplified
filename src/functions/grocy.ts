@@ -249,7 +249,7 @@ async function editProductDetails(product: Product, expiry?: string, mandatory?:
 
             if (expiry) {
                 addProductToStock(product.id, 999, product.locationId, expiry);
-            } else addProductToStock(product.id, 999, product.locationId, '2999-12-31');
+            } else addProductToStock(product.id, 999, product.locationId, '2099-12-31');
 
         }
 
@@ -448,8 +448,12 @@ function setStatus(product: Product) {
     /* check expiry status */
     const expiry = calculateExpiry(product.expiry);
 
-    if (expiry < 5 && expiry > 0) {
+    if (expiry < 6 && expiry > 1) {
         status = 'Use up in ' + expiry + ' days';  
+    }
+
+    if (expiry == 1) {
+        status = 'Use up in 1 day';  
     }
 
     if (expiry == 0) {

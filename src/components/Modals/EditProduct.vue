@@ -12,7 +12,7 @@
         <div class="status-setting">
           <h4>Product status</h4>
           <select name="status" id="status">
-            <option>In stock</option>
+            <option>{{ props.product.status }}</option>
           </select>     
         </div>
 
@@ -49,7 +49,7 @@ const doesNotExpire = ref(getExpiry(props.product.expiry));
 const isMandatory = ref(props.product.mandatory);
 
 function getExpiry(date: Date) {
-  if (date.toISOString().split('T')[0] == '2999-12-31') {
+  if (date.toISOString().split('T')[0] == '2099-12-31') {
     return true;
   } else return false;
 }
@@ -59,10 +59,12 @@ function saveChanges() {
   let expiryDate = '';
 
   if (doesNotExpire.value == true) {
-    expiryDate = '2999-12-31';
+    expiryDate = '2099-12-31';
   } else {
     expiryDate = expiry.value; 
   }
+
+  console.log(expiryDate);
 
   editProductDetails(props.product, expiryDate, isMandatory.value, undefined)
 

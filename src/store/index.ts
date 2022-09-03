@@ -147,7 +147,6 @@ export default createStore({
       if (id) {
         
         const productIndex = state.shoppingList.findIndex(item => item.product_id == id);
-        console.log(productIndex);
         
         if (productIndex != -1) {
           return true;
@@ -181,12 +180,12 @@ export default createStore({
     },
 
     setStockIds(state, { productId, stockIds }) {
-      const index = state.stock.findIndex(item => item.id = productId);
+      const index = state.stock.findIndex(item => item.id == productId);
       state.stock[index].stockIds = stockIds;
     },
 
     setProductLocation(state, payload) {
-      const index = state.stock.findIndex(item => item.id = payload.productId);
+      const index = state.stock.findIndex(item => item.id == payload.productId);
       state.stock[index].locationId = payload.productLocation;
       state.stock[index].location = payload.locationName;
     }

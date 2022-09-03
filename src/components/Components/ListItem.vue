@@ -2,7 +2,7 @@
     <div class="list-item">
         <p>{{ props.product.name }}</p>
         <p class="tag">{{ props.product.location }}</p>
-        <p class="status" :class="{ expiring : isExpiring, expired : isExpired }">{{ getStatus(props.product) }}</p>
+        <p class="status" :class="{ expiring : isExpiring, expired : isExpired }">{{ setClass(product) }}</p>
         <Controls :product="props.product" />
 
     </div>
@@ -36,36 +36,23 @@ function calculateExpiry (expiry: Date) {
 
 }
 
-function getStatus(product: Product) {
-    let status = '';
+function setClass(product: Product) {
 
-    if (product.quantity == 0) {
-        status = 'Not in stock';
-    } else status = 'In stock';
-
-    if (product.onShoppingList == true) {
-        status = 'On shopping list';
-    }
-
-    /* check expiry status */
     const expiry = calculateExpiry(product.expiry);
 
     if (expiry < 5 && expiry > 0) {
         isExpiring.value = true;
-        status = 'Use up in ' + expiry + ' days';  
     }
 
     if (expiry == 0) {
         isExpiring.value = true;
-        status = 'Use up today';  
     }
 
     if (expiry < 0) {
         isExpired.value = true;
-        status = 'Expired ' + -expiry + ' days ago';
     }
 
-    return status;
+    return product.status;
 }
 
     
