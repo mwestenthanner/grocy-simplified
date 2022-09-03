@@ -11,10 +11,10 @@
         </div>
         <div class="list-heading">
             <div class="heading-item">
-                <h3>Item</h3><svg class="chevron" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><title/><g data-name="Layer 2" id="Layer_2"><path d="M16,21a1,1,0,0,1-.71-.29l-8-8a1,1,0,1,1,1.42-1.42L16,18.59l7.29-7.3a1,1,0,0,1,1.42,1.42l-8,8A1,1,0,0,1,16,21Z"/></g><g id="frame"><rect class="cls-1" height="32" width="32"/></g></svg>
+                <h3 class="sort-up" id="name" @click="setSort($event)">Item</h3>
             </div>
-            <h3 class="tag-heading">Location</h3>
-            <h3 class="status">Status</h3>
+            <h3 id="location" @click="setSort($event)" class="tag-heading">Location</h3>
+            <h3 id="status" @click="setSort($event)">Status</h3>
             <h3>Modify</h3>
         </div>
         <div class="list">
@@ -24,6 +24,7 @@
 </template>
 
 <script lang="ts" setup>
+
 import { ref, computed } from 'vue'
 import ListItem from '../Components/ListItem.vue'
 import SearchFilter from '../Components/SearchFilter.vue'
@@ -34,8 +35,45 @@ const store = useStore();
 
 const activeLocation = ref(0);
 
-const stock = computed(() => store.getters.getSingleLocationStock(activeLocation.value));
+const sortUp = ref(true);
+const sortParam = ref('name');
+
+const stock = computed(() => store.getters.getStockFilteredAndSorted(activeLocation.value, sortParam.value, sortUp.value));
 const locationList = computed(() => store.getters.getLocations);
+
+function setSort(event: Event) {
+
+    if (event.target instanceof Element) { 
+
+        // if parameter changes, set default sort direction, else invert sort direction
+        if (sortParam.value == event.target.id) {
+            sortUp.value = !sortUp.value;
+        } else {
+            sortParam.value = event.target.id;
+            sortUp.value = true;
+        }
+
+        // remove any chevrons
+        const elementsUp = document.getElementsByClassName("sort-up");
+        while (elementsUp.length) {
+            elementsUp[0].classList.remove("sort-up");
+        }
+
+        const elementsDown = document.getElementsByClassName("sort-down");
+        while (elementsDown.length) {
+            elementsDown[0].classList.remove("sort-down");
+        }
+
+        // show chevron on correct element
+        if (sortUp.value == true) {
+            event.target.classList.add("sort-up");
+        } else {
+            event.target.classList.add("sort-down");
+        }
+        
+    }
+    
+}
 
 </script>
 
@@ -88,22 +126,34 @@ const locationList = computed(() => store.getters.getLocations);
     flex-direction: row;
 }
 
-.status {
+#status {
     text-align: left !important;
-}
-
-.chevron {
-    height: 1.5rem;
-    margin-left: 0.5rem;
-    fill: var(--dark-green);
-}
-
-.chevron .cls-1 {
-    fill:none;
 }
 
 .list {
     border-top: 1px solid var(--font-accent);
+}
+
+.sort-up:after {
+    display: inline-block;
+    content: ' ';
+    background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' %3F%3E%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cstyle%3E.cls-1%7Bfill:none;%7D%3C/style%3E%3C/defs%3E%3Ctitle/%3E%3Cg data-name='Layer 2' id='Layer_2'%3E%3Cpath d='M16,21a1,1,0,0,1-.71-.29l-8-8a1,1,0,1,1,1.42-1.42L16,18.59l7.29-7.3a1,1,0,0,1,1.42,1.42l-8,8A1,1,0,0,1,16,21Z'/%3E%3C/g%3E%3Cg id='frame'%3E%3Crect class='cls-1' height='32' width='32'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 1.5rem 1.5rem;
+    height: 1.5rem;
+    width: 1.5rem;
+    vertical-align: middle;
+    margin-left: 1rem;
+}
+
+.sort-down:after {
+    display: inline-block;
+    content: ' ';
+    background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' %3F%3E%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cstyle%3E.cls-1%7Bfill:none;%7D%3C/style%3E%3C/defs%3E%3Ctitle/%3E%3Cg data-name='Layer 2' id='Layer_2'%3E%3Cpath d='M24,21a1,1,0,0,1-.71-.29L16,13.41l-7.29,7.3a1,1,0,1,1-1.42-1.42l8-8a1,1,0,0,1,1.42,0l8,8a1,1,0,0,1,0,1.42A1,1,0,0,1,24,21Z'/%3E%3C/g%3E%3Cg id='frame'%3E%3Crect class='cls-1' height='32' width='32'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 1.5rem 1.5rem;
+    height: 1.5rem;
+    width: 1.5rem;
+    vertical-align: middle;
+    margin-left: 1rem;
 }
 
 </style>
