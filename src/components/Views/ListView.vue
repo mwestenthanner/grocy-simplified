@@ -12,7 +12,7 @@
                 :options="statusOptions"
                 :searchable="true"
                 />
-            <SearchFilter />
+            <SearchFilter v-model="searchText" />
         </div>
         <div class="list-heading">
             <div class="heading-item">
@@ -41,6 +41,7 @@ const locationFilter = ref(0);
 const statusFilter = ref('');
 const sortUp = ref(true);
 const sortParam = ref('name');
+const searchText = ref(null);
 
 // these are copied from setStatus in functions/grocy
 const statusOptions = [
@@ -51,7 +52,7 @@ const statusOptions = [
     'Expired'
 ];
 
-const stock = computed(() => store.getters.getStockFilteredAndSorted(locationFilter.value, statusFilter.value, sortParam.value, sortUp.value));
+const stock = computed(() => store.getters.getStockFilteredAndSorted(locationFilter.value, statusFilter.value, sortParam.value, sortUp.value, searchText.value));
 const locationList = computed(() => store.getters.getLocations);
 
 function setSort(event: Event) {

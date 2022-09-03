@@ -112,3 +112,23 @@ export function sortStockBy(list: Array<Product>, sortParam: string, sortUp: boo
 
     return list;
 }
+
+export function search(list: Array<Product>, searchText: string) {
+
+    if (searchText == '' || !searchText) {
+        return list;
+    }
+
+    else return list.filter(item => {
+
+        const itemString = JSON.stringify(item).toLowerCase();
+
+        console.log(itemString);
+
+        if (itemString.includes(searchText.toLowerCase())) {
+            return true;
+        } else return false;
+      
+    })
+
+}
