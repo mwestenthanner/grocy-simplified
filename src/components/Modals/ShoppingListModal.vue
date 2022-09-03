@@ -1,14 +1,22 @@
 <template>
-  <div id="modal-overlay" @click="$emit('close-modal'); addProductToShoppingList(props.product.id, props.product.quantity ?? 999);">
+  <div id="modal-overlay" @click="$emit('close-modal')">
 
     <div id="modal" @click.stop>
-        <h2>Added {{ props.product.name }} to shopping list</h2>
-        <p>Add any notes on the product here:</p>
-        <input v-model="productNotes" type="text" name="notes" id="notes" placeholder="Only this brand...">
-        <p>Do you want to remove it from stock?</p>
+        <h2>Add product to shopping list</h2>
+        <div class="choose-product">
+          <label for="shopping-select">Product</label>
+            <Multiselect
+                id="shopping-select"
+                v-model="productValue"
+                :options="getOptions(productList)"
+                :searchable="true"
+                />
+        </div>
+        <div class="remove" v-if="productInStock">
+          <input v-model="removeFromStock" type="checkbox" name="toggle-stock" id="toggle-stock"><label for="toggle-stock">Remove product from stock</label>
+        </div>
         <div class="buttons">
-            <button type="submit" @click="useUpProduct(props.product.id, props.product.quantity ?? 0); addProductToShoppingList(props.product.id, props.product.quantity ?? 999, productNotes);">Yes</button>
-            <button type="button" @click="addProductToShoppingList(props.product.id, props.product.quantity ?? 999, productNotes); $emit('close-modal')">No</button>
+            <button type="submit" @click="saveChanges(removeFromStock); $emit('close-modal')">Confirm</button>
             <button type="button" @click="$emit('close-modal')">Cancel</button>
         </div>
     </div>
@@ -18,20 +26,59 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, PropType, ref } from 'vue'
+import { defineProps, PropType, ref, computed, toRef } from 'vue'
+import Multiselect from '@vueform/multiselect'
 import { Product } from '../../types'
+import { useStore } from 'vuex';
 import { useUpProduct, addProductToShoppingList } from '../../functions/grocy'
 
-const productNotes = ref('')
+const store = useStore();
 
 const props = defineProps({
     product:  {
             type: Object as PropType<Product>,
-            required: true
+            required: false
         }
 })
 
+const productValue = ref('');
+const removeFromStock = ref(false);
+
+if (props.product) {
+  const product = toRef(props, 'product');
+  productValue.value = product.value?.name ?? '';
+} 
+
+const productList = computed(() => store.getters.getProducts);
+const productInStock = computed(() => store.getters.productIsInStock(productValue.value));
+
+function getOptions(property: {
+[x: string]: any; value: any[]; 
+}) {
+    const options: any[] = [];
+
+    property.forEach((element: any) => {
+        options.push(element.name);
+    });
+
+    return options;
+}
+
+function saveChanges(useUp: boolean) {
+
+  const productId = computed(() => store.getters.getProductIdFromName(productValue.value));
+
+  addProductToShoppingList(productId.value, 999);
+
+  if (useUp) {
+    useUpProduct(productId.value);
+  }
+
+}
+
 </script>
+
+<style src="@vueform/multiselect/themes/default.css"></style>
 
 <style scoped>
 
@@ -45,30 +92,36 @@ const props = defineProps({
   justify-content: center;
   background-color: #000000b0;
   align-items: center;
+  z-index: 1;
 }
 
 #modal {
   background-color: var(--background);
+  width: 40vw;
   padding: 3rem;
   border-radius: 1rem;
 }
 
-h2 {
-    margin-bottom: 2rem;
+h2, p {
+  margin-bottom: 1rem;
 }
 
-#notes {
+.multiselect {
     margin: 1rem 0;
-    width: 90%;
 }
 
 .buttons {
     display: flex;
     gap: 1rem;
-    margin-top: 1rem;
+    margin-top: 2rem;
 }
 
 button {
     width: 100%;
 }
+
+label[for="toggle-stock"] {
+    margin-left: 1rem;
+}
+
 </style>

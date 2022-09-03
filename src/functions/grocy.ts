@@ -60,6 +60,29 @@ async function getProducts() {
 
 }
 
+async function getShoppingList() {
+
+    const request = new Request(
+        apiUrl + 'objects/shopping_list',
+        {
+            method: 'GET',
+            headers: headers,
+            redirect: 'follow'
+        }
+      );
+
+    await fetch(request)
+    .then(response => response.text())
+    .then(result => { 
+
+        // handle response data here
+        store.commit('setShoppingList', JSON.parse(result));
+
+    })
+    .catch(error => console.log('error', error));
+
+}
+
 async function getStock() {
 
     const productsInStock: Product[] = [];
@@ -85,7 +108,7 @@ async function getStock() {
             const product = {
                 id: element.product.id,
                 name: element.product.name,
-                location: getLocationFromId(element.product.location_id),
+                location: '',
                 locationId: element.product.location_id,
                 quantity: element.amount,
                 unit: 'pcs',
@@ -93,10 +116,11 @@ async function getStock() {
                 mandatory: isMandatory(element.product.min_stock_amount),
                 onShoppingList: false,
                 status: '',
-                //stockIds: await getStockEntries(element.product.id),
                 nutritionalValue: element.product.calories
             } as Product
 
+            product.location = getLocationFromId(element.product.location_id);
+            product.onShoppingList = isOnShoppingList(element.product.id);
             product.status = setStatus(product);
             
             productsInStock.push(product);
@@ -463,4 +487,10 @@ function isMandatory(minStockAmount: number) {
     } else return false;
 }
 
-export { getLocations, getProducts, getStock, useUpProduct, moveProduct, addProductToShoppingList, addProductToStock, editProductDetails }
+function isOnShoppingList (productId: number) {
+
+    return store.getters.productIsOnShoppingList(productId);
+
+}
+
+export { getLocations, getProducts, getShoppingList, getStock, useUpProduct, moveProduct, addProductToShoppingList, addProductToStock, editProductDetails }

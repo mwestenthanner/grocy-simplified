@@ -82,6 +82,7 @@ function saveChanges() {
   justify-content: center;
   background-color: #000000b0;
   align-items: center;
+  z-index: 1;
 }
 
 #modal {

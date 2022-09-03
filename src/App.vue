@@ -12,9 +12,10 @@
 import Sidebar from './components/Sidebar.vue'; 
 import HeaderBar from './components/Components/HeaderBar.vue';
 import { ref } from 'vue';
-import { getLocations, getProducts, getStock } from './functions/grocy'
+import { getLocations, getProducts, getStock, getShoppingList } from './functions/grocy'
 
 getLocations();
+getShoppingList();
 getProducts();
 getStock();
 

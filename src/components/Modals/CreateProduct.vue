@@ -2,26 +2,14 @@
     <div id="modal-overlay" @click="$emit('close-modal')">
   
       <div id="modal" @click.stop>
-            <h2>Add product to stock</h2>
+            <h2>Create new product</h2>
 
-            <label for="product-select">Product</label>
-            <Multiselect
-                id="product-select"
-                v-model="productValue"
-                :options="getOptions(productOptions)"
-                :searchable="true"
-                />
-
-            <label for="location-select">Location</label>
+            <label for="location-select">Default location</label>
             <Multiselect
                 id="location-select"
                 v-model="locationValue"
                 :options="getOptions(locationOptions)"
                 />
-
-            <label for="expiry">Best Before Date</label>
-            <input v-model="expiry" type="date" name="expiry" id="expiry" v-if="!noExpiry">
-            <input v-model="noExpiry" type="checkbox" name="toggle-expiry" id="toggle-expiry"><label for="toggle-expiry">Don't set best before date</label>
 
             <div class="buttons">
               <button type="submit" @click="addProduct();">Save</button>

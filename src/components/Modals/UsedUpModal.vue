@@ -66,7 +66,10 @@ function saveChanges(shoppingList: boolean) {
   const productId = computed(() => store.getters.getProductIdFromName(productValue.value));
 
   useUpProduct(productId.value);
-  addProductToShoppingList(productId.value, 999);
+
+  if (shoppingList) {
+    addProductToShoppingList(productId.value, 999);
+  }
 
 }
 
@@ -86,6 +89,7 @@ function saveChanges(shoppingList: boolean) {
   justify-content: center;
   background-color: #000000b0;
   align-items: center;
+  z-index: 1;
 }
 
 #modal {

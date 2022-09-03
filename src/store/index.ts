@@ -63,12 +63,26 @@ const locationList = [
 
 const stock: Product[] = []
 
+const shoppingList = [
+  {
+    "id": "9",
+    "product_id": "2",
+    "note": null,
+    "amount": "999",
+    "row_created_timestamp": "2022-09-03 15:17:37",
+    "shopping_list_id": "1",
+    "done": "0",
+    "qu_id": "3"
+  }
+]
+
 export default createStore({
   state: {
     productList,
     recipeList,
     locationList,
-    stock
+    stock,
+    shoppingList
   }, 
   getters: {
 
@@ -117,7 +131,30 @@ export default createStore({
     getProductIdFromName: (state) => (name: string) => {
       const product = state.productList.find(item => item.name === name);
       return product?.id;
-    }
+    },
+
+    productIsInStock: (state) => (name: string) => {
+      if (name) {
+        const productIndex = state.stock.findIndex(item => item.name == name);
+        if (productIndex != -1) {
+          return true;
+        } else return false;
+      } else return false;
+    },
+
+    productIsOnShoppingList: (state) => (id: string) => {
+
+      if (id) {
+        
+        const productIndex = state.shoppingList.findIndex(item => item.product_id == id);
+        console.log(productIndex);
+        
+        if (productIndex != -1) {
+          return true;
+        } else return false;
+        
+      } else return false;
+    },
 
   },
   mutations: {
@@ -133,6 +170,10 @@ export default createStore({
 
     setLocations(state, locations) {
       state.locationList = locations;
+    },
+
+    setShoppingList(state, shoppingList) {
+      state.shoppingList = shoppingList;
     },
 
     setStock(state, stock: Array<Product>) {
