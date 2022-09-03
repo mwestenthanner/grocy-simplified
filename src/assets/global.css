@@ -76,6 +76,7 @@
     --ms-option-bg-selected-pointed: var(--accent-primary);
     --ms-option-color-selected-pointed: var(--font-main);    
     --ms-ring-color: transparent;    
+    --ms-placeholder-color: var(--font-accent); 
 }
 
 /* --- STYLING RESETS --- */
@@ -148,5 +149,20 @@ label {
 
 .multiselect-search {
     border: none !important;
+}
+
+.filter-bar .multiselect-placeholder::before {
+    background-image: url("data:image/svg+xml,%3Csvg enable-background='new 0 0 32 32' id='Editable-line' version='1.1' viewBox='0 0 32 32' xml:space='preserve' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3Cpath d=' M3.241,7.646L13,19v9l6-4v-5l9.759-11.354C29.315,6.996,28.848,6,27.986,6H4.014C3.152,6,2.685,6.996,3.241,7.646z' fill='none' id='XMLID_6_' stroke='%23BEBEBE' stroke-linecap='round' stroke-linejoin='round' stroke-miterlimit='10' stroke-width='2'/%3E%3C/svg%3E");
+    content: ' ';
+    height: 1.2rem;
+    width: 1.2rem;
+    vertical-align: middle;
+    background-size: 1.2rem;
+    margin-right: 0.5rem;
+}
+
+.filter-bar .multiselect-search {
+    width: 85%;
+    margin-left: 15%;
 }
 

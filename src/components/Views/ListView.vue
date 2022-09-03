@@ -1,12 +1,17 @@
 <template>
     <div class="categories">
-        <span :class="{ 'active-category': activeLocation == 0 }" @click="activeLocation = 0">All locations</span>
-        <span v-for="item in locationList" :key="item.id" :class="{ 'active-category': activeLocation == item.id }" @click="activeLocation = item.id">{{ item.name }}</span>
+        <span :class="{ 'active-category': locationFilter == 0 }" @click="locationFilter = 0">All locations</span>
+        <span v-for="item in locationList" :key="item.id" :class="{ 'active-category': locationFilter == item.id }" @click="locationFilter = item.id">{{ item.name }}</span>
     </div>
     <div class="list-view">
         <div class="filter-bar">
-            <Filter heading="Expiry" />
-            <Filter heading="Status" />
+            <Multiselect
+                id="status-select"
+                v-model="statusFilter"
+                placeholder="Status"
+                :options="statusOptions"
+                :searchable="true"
+                />
             <SearchFilter />
         </div>
         <div class="list-heading">
@@ -24,21 +29,29 @@
 </template>
 
 <script lang="ts" setup>
-
 import { ref, computed } from 'vue'
+import Multiselect from '@vueform/multiselect'
 import ListItem from '../Components/ListItem.vue'
 import SearchFilter from '../Components/SearchFilter.vue'
-import Filter from '../Components/Filter.vue'
 import { useStore } from 'vuex';
 
 const store = useStore();
 
-const activeLocation = ref(0);
-
+const locationFilter = ref(0);
+const statusFilter = ref('');
 const sortUp = ref(true);
 const sortParam = ref('name');
 
-const stock = computed(() => store.getters.getStockFilteredAndSorted(activeLocation.value, sortParam.value, sortUp.value));
+// these are copied from setStatus in functions/grocy
+const statusOptions = [
+    'In stock',
+    'On shopping list',
+    'Use up in < 5 days',
+    'Use up today',
+    'Expired'
+];
+
+const stock = computed(() => store.getters.getStockFilteredAndSorted(locationFilter.value, statusFilter.value, sortParam.value, sortUp.value));
 const locationList = computed(() => store.getters.getLocations);
 
 function setSort(event: Event) {
@@ -77,6 +90,8 @@ function setSort(event: Event) {
 
 </script>
 
+<style src="@vueform/multiselect/themes/default.css"></style>
+
 <style scoped>
 
 .categories {
@@ -105,6 +120,13 @@ function setSort(event: Event) {
     display: flex;
     gap: 1rem;
     justify-content: flex-end;
+}
+
+.multiselect {
+    max-width: 15rem;
+    margin: 0;
+    height: auto;
+    font-family: 'Inter';
 }
 
 .list-heading {

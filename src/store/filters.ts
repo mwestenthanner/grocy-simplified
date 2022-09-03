@@ -1,6 +1,6 @@
-import { Product, Recipe } from '../types'
+import { Product } from '../types'
 
-export function filterByLocation(list: Array<Product>, locationId: number) {
+export function filterByLocation(list: Array<Product>, locationId: number): Array<Product> {
     if (locationId == 0) {
         return list;
     }
@@ -14,7 +14,60 @@ export function filterByLocation(list: Array<Product>, locationId: number) {
     })
 }
 
-export function sortStockBy(list: Array<Product>, sortParam: string, sortUp: boolean) {
+export function filterByStatus(list: Array<Product>, status: string): Array<Product> {
+    if (status == '' || !status) {
+        return list;
+    }
+
+    else return list.filter(item => {
+
+        switch (status) {
+
+            case 'On shopping list':
+
+                if (item.status.includes('On shopping list')) {
+                    return true;
+                } else return false;
+
+                break;
+
+            case 'Use up in < 5 days':
+
+                if (item.status.includes('Use up') && !item.status.includes('today')) {
+                    return true;
+                } else return false;
+
+                break;
+
+            case 'Use up today':
+
+                if (item.status.includes('Use up today')) {
+                    return true;
+                } else return false;
+
+                break;
+
+            case 'Expired':
+
+                if (item.status.includes('Expired')) {
+                    return true;
+                } else return false;
+
+            // In stock as default
+            default: 
+
+                if (item.status.includes('In stock')) {
+                    return true;
+                } else return false;
+
+        }
+
+
+      return true;
+    })
+}
+
+export function sortStockBy(list: Array<Product>, sortParam: string, sortUp: boolean): Array<Product> {
 
     switch (sortParam) {
         
