@@ -254,6 +254,7 @@ async function addProductToShoppingList(productId: number, quantity: number, not
     }
 
     getShoppingList();
+    getStock();
 
 }
 
@@ -510,6 +511,7 @@ async function removeProductFromShoppingList (productId: number) {
     .catch(error => console.log('error', error));
 
     getShoppingList();
+    getStock();
 }
 
 function setStatus(product: Product) {
