@@ -11,13 +11,15 @@
 <script lang="ts" setup>
 import Sidebar from './components/Sidebar.vue'; 
 import HeaderBar from './components/Components/HeaderBar.vue';
-import { ref } from 'vue';
+import { onBeforeMount, ref } from 'vue';
 import { getLocations, getProducts, getStock, getShoppingList } from './functions/grocy'
 
-getLocations();
-getShoppingList();
-getProducts();
-getStock();
+onBeforeMount(async () => {
+  await getLocations();
+  await getProducts();
+  await getStock();
+  await getShoppingList();
+})
 
 </script>
 

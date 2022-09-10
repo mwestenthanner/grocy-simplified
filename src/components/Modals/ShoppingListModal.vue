@@ -42,7 +42,7 @@ const props = defineProps({
 })
 
 const productValue = ref('');
-const removeFromStock = ref(false);
+const removeFromStock = ref(true);
 
 if (props.product) {
   const product = toRef(props, 'product');

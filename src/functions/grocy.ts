@@ -32,6 +32,8 @@ async function getLocations() {
 
         store.commit('setLocations', json);
 
+        return result;
+
     })
     .catch(error => console.log('error', error));
 
@@ -76,7 +78,13 @@ async function getShoppingList() {
     .then(result => { 
 
         // handle response data here
-        store.commit('setShoppingList', JSON.parse(result));
+        const json = JSON.parse(result);
+        const list = json.map((obj: { product_id: number; }) => ({ ...obj, 
+            name: getProductFromId(obj.product_id),
+            location_id: getStandardLocation(obj.product_id)
+        }));
+
+        store.commit('setShoppingList', list);
 
     })
     .catch(error => console.log('error', error));
@@ -120,7 +128,7 @@ async function getStock() {
             } as Product
 
             product.location = getLocationFromId(element.product.location_id);
-            product.onShoppingList = isOnShoppingList(element.product.id);
+            product.onShoppingList = isOnShoppingListAndNotCrossedOut(element.product.id);
             product.status = setStatus(product);
             
             productsInStock.push(product);
@@ -213,27 +221,39 @@ async function moveProduct(productId: number, quantity: number, locationIdFrom: 
 
 async function addProductToShoppingList(productId: number, quantity: number, note?: string) {
 
-    headers.append('Accept', 'application/json');
-    headers.append('Content-Type', 'application/json');
+    // if product is on shopping list, set done to 0
 
-    const requestBody = {
-        "product_id": productId,
-        "product_amount": quantity,
-        "note": note ?? ''
+    if (isOnShoppingList(productId)) {
+        editShoppingListDetails(productId, undefined, 0);
     }
 
-    const request = new Request(
-        apiUrl + 'stock/shoppinglist/add-product',
-        {
-            method: 'POST',
-            headers: headers,
-            body: JSON.stringify(requestBody)
-        }
-      );
+    else  {
 
-    await fetch(request)
-    .then(response => response.text())
-    .catch(error => console.log('error', error));
+        headers.append('Accept', 'application/json');
+        headers.append('Content-Type', 'application/json');
+    
+        const requestBody = {
+            "product_id": productId,
+            "product_amount": quantity,
+            "note": note ?? ''
+        }
+    
+        const request = new Request(
+            apiUrl + 'stock/shoppinglist/add-product',
+            {
+                method: 'POST',
+                headers: headers,
+                body: JSON.stringify(requestBody)
+            }
+          );
+    
+        await fetch(request)
+        .then(response => response.text())
+        .catch(error => console.log('error', error));
+
+    }
+
+    getShoppingList();
 
 }
 
@@ -434,6 +454,64 @@ async function getStockDetails(stock: Array<Product>) {
 
 }
 
+async function editShoppingListDetails (shoppingListId: number, note?: string, done?: number) {
+    
+    interface shoppingListPayload {
+        done?: number,
+        note?: string,
+    }
+
+    const requestBody: shoppingListPayload = {};
+
+    if (done == 1 || done == 0) {
+        requestBody.done = done;
+    }
+
+    if (note) {
+        requestBody.note = note;
+    }
+
+    const productUrl = apiUrl + 'objects/shopping_list/' + shoppingListId
+
+    headers.append("Content-Type", "application/json");
+
+    const request = new Request(
+        productUrl,
+        {
+            method: 'PUT',
+            headers: headers,
+            body: JSON.stringify(requestBody),
+            redirect: 'follow'
+
+        }
+        );
+
+    await fetch(request)
+    .then(response => response.text())
+    .catch(error => console.log('error', error));
+
+    getShoppingList();
+}
+
+async function removeProductFromShoppingList (productId: number) {
+    headers.append('Accept', 'application/json');
+    headers.append('Content-Type', 'application/json');
+
+    const request = new Request(
+        apiUrl + 'objects/shopping_list/' + productId,
+        {
+            method: 'DELETE',
+            headers: headers
+        }
+      );
+
+    await fetch(request)
+    .then(response => response.text())
+    .catch(error => console.log('error', error));
+
+    getShoppingList();
+}
+
 function setStatus(product: Product) {
     let status = '';
 
@@ -479,10 +557,17 @@ function calculateExpiry (expiry: Date) {
 }
 
 function getLocationFromId (id: number) {
-
     const location = store.getters.getLocationFromId(id.toString());
     return location.name;
-    
+}
+
+function getProductFromId (id: number) {
+    const product = store.getters.getProductFromId(id.toString());
+    return product.name;
+}
+
+function getStandardLocation (productId: number) {
+    return store.getters.getProductStandardLocationId(productId.toString());
 }
 
 function isMandatory(minStockAmount: number) {
@@ -492,9 +577,11 @@ function isMandatory(minStockAmount: number) {
 }
 
 function isOnShoppingList (productId: number) {
-
     return store.getters.productIsOnShoppingList(productId);
-
 }
 
-export { getLocations, getProducts, getShoppingList, getStock, useUpProduct, moveProduct, addProductToShoppingList, addProductToStock, editProductDetails }
+function isOnShoppingListAndNotCrossedOut(productId: number) {
+    return store.getters.productIsOnShoppingListAndNotCrossedOut(productId);
+}
+
+export { getLocations, getProducts, getShoppingList, getStock, useUpProduct, moveProduct, addProductToShoppingList, addProductToStock, editProductDetails, editShoppingListDetails, removeProductFromShoppingList }

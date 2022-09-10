@@ -124,6 +124,10 @@ export default createStore({
       return state.productList;
     },
 
+    getProductFromId: (state) => (id: string) => {
+      return state.productList.find(item => item.id === id);
+    },
+
     getProductFromName: (state) => (name: string) => {
       return state.productList.find(item => item.name === name);
     },
@@ -131,6 +135,11 @@ export default createStore({
     getProductIdFromName: (state) => (name: string) => {
       const product = state.productList.find(item => item.name === name);
       return product?.id;
+    },
+
+    getProductStandardLocationId: (state) => (productId: string) => {
+      const product = state.productList.find(item => item.id === productId);
+      return product?.location_id;
     },
 
     productIsInStock: (state) => (name: string) => {
@@ -154,6 +163,28 @@ export default createStore({
         
       } else return false;
     },
+
+    productIsOnShoppingListAndNotCrossedOut: (state) => (id: string) => {
+
+      if (id) {
+        
+        const productIndex = state.shoppingList.findIndex(item => item.product_id == id);
+        
+        if (productIndex != -1) {
+
+          if(state.shoppingList[productIndex].done == '0') {
+            return true;
+          } else return false;
+
+        } else return false;
+        
+      } else return false;
+
+    },
+
+    getShoppingList: (state => {
+      return state.shoppingList;
+    }),
 
   },
   mutations: {
